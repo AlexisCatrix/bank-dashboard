@@ -31,5 +31,9 @@ export const Submit = styled.input`
 `;
 
 export const InputField = styled.input`
-margin: 2vh;
+  margin: 2vh;
+`;
+
+export const ActionButtons = styled.div`
+  display: flex;
 `;
