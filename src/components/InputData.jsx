@@ -11,6 +11,9 @@ import {
   Submit,
   InputField,
   ActionButtons,
+  MainContainer,
+  Header,
+  NavItem,
 } from "../styled_components/InputData";
 
 export default function InputData() {
@@ -117,64 +120,76 @@ export default function InputData() {
   });
 
   return (
-    <InputDataContainer>
-      <Information>
-        <Form
-          onSubmit={(e) => {
-            handleSubmit(e);
-            differenceCash();
-          }}
-        >
-          <Label>Saisie ton salaire</Label>
-          <InputField
-            id="cashInflow"
-            type="number"
-            name="salary"
-            value={cashInflow}
-            onChange={(e) => handleChangeCashInflow(e)}
-          ></InputField>
-          <Label>Saisie tes dépenses</Label>
-          <InputField
-            id="cashOutflow"
-            type="number"
-            name="cashOut"
-            value={cashOutflow}
-            onChange={(e) => handleChangeCashOutflow(e)}
-          ></InputField>
-          {createList()}
-          <button
-            id="addItem"
-            onClick={() => {
-              addListItem();
-              setSumDisplay(false);
+    <MainContainer>
+      <Header>
+        <NavItem Link to="/DashBoard">
+          DashBoard
+        </NavItem>
+        <NavItem Link to="/Data">
+          Mes données
+        </NavItem>
+      </Header>
+      <InputDataContainer>
+        <Information>
+          <Form
+            onSubmit={(e) => {
+              handleSubmit(e);
+              differenceCash();
             }}
           >
-            +
-          </button>
-          <ActionButtons>
-            <Submit
-              type="submit"
-              value="Valider"
-              onClick={() =>
-                setButtonClicked({ type: "info", isClicked: true })
-              }
-            ></Submit>
-            <Submit
-              type="reset"
-              value="Reset"
+            <Label>Saisie ton salaire</Label>
+            <InputField
+              id="cashInflow"
+              type="number"
+              name="salary"
+              value={cashInflow}
+              onChange={(e) => handleChangeCashInflow(e)}
+            ></InputField>
+            <Label>Saisie tes dépenses</Label>
+            <InputField
+              id="cashOutflow"
+              type="number"
+              name="cashOut"
+              value={cashOutflow}
+              onChange={(e) => handleChangeCashOutflow(e)}
+            ></InputField>
+            {createList()}
+            <button
+              id="addItem"
               onClick={() => {
-                setItems([]);
-                setCashInflow("");
-                setCashOutflow("");
-                setTotalCash("");
+                addListItem();
                 setSumDisplay(false);
               }}
-            ></Submit>
-          </ActionButtons>
-        </Form>
-        {isSumDisplay && <p>Le capital restant est de : {totalCash} €/mois </p>}
-      </Information>
-      <ToastContainer />
-    </InputDataContainer>
+            >
+              +
+            </button>
+            <ActionButtons>
+              <Submit
+                type="submit"
+                value="Valider"
+                onClick={() =>
+                  setButtonClicked({ type: "info", isClicked: true })
+                }
+              ></Submit>
+              <Submit
+                type="reset"
+                value="Reset"
+                onClick={() => {
+                  setItems([]);
+                  setCashInflow("");
+                  setCashOutflow("");
+                  setTotalCash("");
+                  setSumDisplay(false);
+                }}
+              ></Submit>
+            </ActionButtons>
+          </Form>
+          {isSumDisplay && (
+            <p>Le capital restant est de : {totalCash} €/mois </p>
+          )}
+        </Information>
+        <ToastContainer />
+      </InputDataContainer>
+    </MainContainer>
   );
 }
