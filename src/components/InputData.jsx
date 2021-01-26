@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import uuid from "react-uuid";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { notifyInfoBeforeSubmit } from "../assets/notifications/Notifications";
 import {
   InputDataContainer,
   Information,
@@ -7,11 +10,11 @@ import {
   Form,
   Submit,
   InputField,
+  ActionButtons,
 } from "../styled_components/InputData";
 
 export default function InputData() {
-  ////////////////////////////////////////////////////////////////////
-  //////Clone Element/////////////////////////////////////////////////
+  /*-------------------------------------Clone Element----------*/
 
   const [items, setItems] = useState([{ id: uuid(), text: "" }]);
 
@@ -27,12 +30,12 @@ export default function InputData() {
   };
 
   const handleChangeNewItem = (e) => {
-    const { id, value } = e.target;
+    const { id, valueAsNumber } = e.target;
     const newObj = items.map((item) => {
       if (item.id === id) {
         return {
           ...item,
-          text: parseInt(value),
+          text: valueAsNumber,
         };
       } else {
         return item;
@@ -63,43 +66,55 @@ export default function InputData() {
       </div>
     ));
   };
-  //////Clone Element/////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////
+  /*-------------------------------------Clone Element----------*/
 
   const [cashInflow, setCashInflow] = useState("");
   const [cashOutflow, setCashOutflow] = useState("");
+  const [suppCashOutflow, setSuppCashOutflow] = useState("");
   const [totalCash, setTotalCash] = useState("");
 
-  const [isSumDisplay, setSumDisplay] = useState();
+  const [isSumDisplay, setSumDisplay] = useState(false);
+  const [isButtonClicked, setButtonClicked] = useState([{}]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (e.target.value === "") {
+    if (
+      (cashInflow === "" || cashOutflow === "") &&
+      isButtonClicked.type === "info"
+    ) {
       setSumDisplay(false);
+      notifyInfoBeforeSubmit();
     } else {
       setSumDisplay(true);
     }
   };
 
   const handleChangeCashInflow = (e) => {
-    if (e.target.value === Number) {
-      setCashInflow(parseInt(e.target.value));
-    } else {
-      setCashInflow(e.target.value);
-    }
+    setCashInflow(e.target.valueAsNumber);
   };
 
   const handleChangeCashOutflow = (e) => {
-    if (e.target.value === Number) {
-      setCashOutflow(parseInt(e.target.value));
-    } else {
-      setCashOutflow(e.target.value);
-    }
+    setCashOutflow(e.target.valueAsNumber);
   };
 
   const differenceCash = () => {
-    setTotalCash(cashInflow - cashOutflow);
+    let sumCashOutflow = 0;
+    for (let i = 0; i < items.length; i++) {
+      sumCashOutflow += items[i].text;
+    }
+    setSuppCashOutflow(sumCashOutflow);
+    setTotalCash(cashInflow - cashOutflow - suppCashOutflow);
   };
+
+  useEffect(() => {
+    if (cashInflow === "" || cashOutflow === "") {
+      setSumDisplay(false);
+    }
+  }, [cashInflow, cashOutflow]);
+
+  useEffect(() => {
+    differenceCash();
+  });
 
   return (
     <InputDataContainer>
@@ -131,15 +146,35 @@ export default function InputData() {
             id="addItem"
             onClick={() => {
               addListItem();
+              setSumDisplay(false);
             }}
           >
             +
           </button>
-
-          <Submit type="submit" value="Valider"></Submit>
+          <ActionButtons>
+            <Submit
+              type="submit"
+              value="Valider"
+              onClick={() =>
+                setButtonClicked({ type: "info", isClicked: true })
+              }
+            ></Submit>
+            <Submit
+              type="reset"
+              value="Reset"
+              onClick={() => {
+                setItems([]);
+                setCashInflow("");
+                setCashOutflow("");
+                setTotalCash("");
+                setSumDisplay(false);
+              }}
+            ></Submit>
+          </ActionButtons>
         </Form>
         {isSumDisplay && <p>Le capital restant est de : {totalCash} €/mois </p>}
       </Information>
+      <ToastContainer />
     </InputDataContainer>
   );
 }
