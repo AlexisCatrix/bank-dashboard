@@ -60,6 +60,7 @@ export default function InputData() {
           id={item.id}
           type="number"
           name="cashOut"
+          step="0.01"
           value={item.text}
           onChange={(e) => handleChangeNewItem(e)}
         ></InputField>
@@ -155,6 +156,7 @@ export default function InputData() {
                 id="cashInflow"
                 type="number"
                 name="salary"
+                step="0.01"
                 value={cashInflow}
                 onChange={(e) => handleChangeCashInflow(e)}
               ></InputField>
@@ -165,6 +167,7 @@ export default function InputData() {
                 id="cashOutflow"
                 type="number"
                 name="cashOut"
+                step="0.01"
                 value={cashOutflow}
                 onChange={(e) => handleChangeCashOutflow(e)}
               ></InputField>
