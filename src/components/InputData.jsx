@@ -14,6 +14,10 @@ import {
   MainContainer,
   Header,
   NavItem,
+  Remain,
+  InputContainer,
+  PlusButton,
+  RemoveButton,
 } from "../styled_components/InputData";
 
 export default function InputData() {
@@ -49,24 +53,25 @@ export default function InputData() {
 
   const createList = () => {
     return items.map((item, index) => (
-      <div key={item.id}>
+      <InputContainer id="newItem" key={item.id}>
         <Label>Saisie une nouvelle dépense</Label>
         <InputField
+          className="newItem"
           id={item.id}
           type="number"
           name="cashOut"
           value={item.text}
           onChange={(e) => handleChangeNewItem(e)}
         ></InputField>
-        <button
+        <RemoveButton
           id="removeItem"
           onClick={() => {
             removeItem(index);
           }}
         >
           -
-        </button>
-      </div>
+        </RemoveButton>
+      </InputContainer>
     ));
   };
   /*-------------------------------------Clone Element----------*/
@@ -106,14 +111,20 @@ export default function InputData() {
       sumCashOutflow += items[i].text;
     }
     setSuppCashOutflow(sumCashOutflow);
-    setTotalCash(cashInflow - cashOutflow - suppCashOutflow);
+    setTotalCash(
+      Math.floor((cashInflow - cashOutflow - suppCashOutflow) * 100) / 100
+    );
   };
 
   useEffect(() => {
-    if (cashInflow === "" || cashOutflow === "") {
+    if (
+      cashInflow !== Number ||
+      cashOutflow !== Number ||
+      totalCash !== Number
+    ) {
       setSumDisplay(false);
     }
-  }, [cashInflow, cashOutflow]);
+  }, [cashInflow, cashOutflow, totalCash]);
 
   useEffect(() => {
     differenceCash();
@@ -129,6 +140,7 @@ export default function InputData() {
           Mes données
         </NavItem>
       </Header>
+
       <InputDataContainer>
         <Information>
           <Form
@@ -137,24 +149,28 @@ export default function InputData() {
               differenceCash();
             }}
           >
-            <Label>Saisie ton salaire</Label>
-            <InputField
-              id="cashInflow"
-              type="number"
-              name="salary"
-              value={cashInflow}
-              onChange={(e) => handleChangeCashInflow(e)}
-            ></InputField>
-            <Label>Saisie tes dépenses</Label>
-            <InputField
-              id="cashOutflow"
-              type="number"
-              name="cashOut"
-              value={cashOutflow}
-              onChange={(e) => handleChangeCashOutflow(e)}
-            ></InputField>
+            <InputContainer>
+              <Label>Saisie ton salaire</Label>
+              <InputField
+                id="cashInflow"
+                type="number"
+                name="salary"
+                value={cashInflow}
+                onChange={(e) => handleChangeCashInflow(e)}
+              ></InputField>
+            </InputContainer>
+            <InputContainer>
+              <Label>Saisie tes dépenses</Label>
+              <InputField
+                id="cashOutflow"
+                type="number"
+                name="cashOut"
+                value={cashOutflow}
+                onChange={(e) => handleChangeCashOutflow(e)}
+              ></InputField>
+            </InputContainer>
             {createList()}
-            <button
+            <PlusButton
               id="addItem"
               onClick={() => {
                 addListItem();
@@ -162,7 +178,7 @@ export default function InputData() {
               }}
             >
               +
-            </button>
+            </PlusButton>
             <ActionButtons>
               <Submit
                 type="submit"
@@ -185,7 +201,7 @@ export default function InputData() {
             </ActionButtons>
           </Form>
           {isSumDisplay && (
-            <p>Le capital restant est de : {totalCash} €/mois </p>
+            <Remain>Le capital restant est de : {totalCash} €/mois </Remain>
           )}
         </Information>
         <ToastContainer />
