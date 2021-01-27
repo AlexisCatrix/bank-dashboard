@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   DashboardContainer,
   WelcomeTitle,
@@ -10,7 +11,9 @@ export default function Dashboard() {
   return (
     <DashboardContainer>
       <Header>
-        <HomeIcon />
+        <Link to="/">
+          <HomeIcon />
+        </Link>
       </Header>
       <WorkPlace>
         <WelcomeTitle>Hi there ! There will be a dashboard here !</WelcomeTitle>
