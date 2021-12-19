@@ -1,16 +1,19 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import InputData from "./components/InputData";
-import "./assets/style/sass/main.scss";
+import Home from "./components/Home";
 
 function App() {
   return (
-    <Router>
+    <div>
+      <Header />
       <Switch>
-        <Route exact path="/" component={InputData} />
-        <Route path="/Dashboard" component={Dashboard} />
+        <Route exact path="/" component={Home} />
+        <Route path="/dashboard" component={InputData} />
+        <Route path="/data" component={Dashboard} />
       </Switch>
-    </Router>
+    </div>
   );
 }
 
