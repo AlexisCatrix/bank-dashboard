@@ -43,7 +43,6 @@ export default function InputData() {
         </label>
         <input
           className="input_field"
-          className="newItem"
           id={item.id}
           type="number"
           name="cashOut"
