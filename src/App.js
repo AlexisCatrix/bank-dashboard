@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import InputData from "./components/InputData";
+import "./assets/style/sass/main.scss";
 
 function App() {
   return (
