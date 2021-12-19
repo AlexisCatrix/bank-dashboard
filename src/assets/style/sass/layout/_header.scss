@@ -1,0 +1,15 @@
+.header {
+  width: 100vw;
+  height: 10vh;
+  background: linear-gradient(black, #154360);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid white;
+}
+
+.nav_items {
+  color: white;
+  text-shadow: 4px 4px 2px black;
+  text-decoration: none;
+  padding: 2vw;
+}
