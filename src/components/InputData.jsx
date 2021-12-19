@@ -2,23 +2,7 @@ import { useState, useEffect } from "react";
 import uuid from "react-uuid";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { notifyInfoBeforeSubmit } from "../assets/notifications/Notifications";
-import {
-  InputDataContainer,
-  Information,
-  Label,
-  Form,
-  Submit,
-  InputField,
-  ActionButtons,
-  MainContainer,
-  Header,
-  NavItem,
-  Remain,
-  InputContainer,
-  PlusButton,
-  RemoveButton,
-} from "../styled_components/InputData";
+import { notifyInfoBeforeSubmit } from "../assets/js/notifications/Notifications";
 
 export default function InputData() {
   /*-------------------------------------Clone Element----------*/
@@ -53,26 +37,27 @@ export default function InputData() {
 
   const createList = () => {
     return items.map((item, index) => (
-      <InputContainer id="newItem" key={item.id}>
-        <Label>Saisie une nouvelle dépense</Label>
-        <InputField
-          className="newItem"
+      <div className="input_container" key={item.id}>
+        <label className="input_container_label" htmlFor={item.id}>
+          Saisissez une nouvelle dépense
+        </label>
+        <input
+          className="input_field"
           id={item.id}
           type="number"
           name="cashOut"
           step="0.01"
           value={item.text}
           onChange={(e) => handleChangeNewItem(e)}
-        ></InputField>
-        <RemoveButton
+        ></input>
+        <i
+          className="far fa-minus-square"
           id="removeItem"
           onClick={() => {
             removeItem(index);
           }}
-        >
-          -
-        </RemoveButton>
-      </InputContainer>
+        ></i>
+      </div>
     ));
   };
   /*-------------------------------------Clone Element----------*/
@@ -132,83 +117,84 @@ export default function InputData() {
   });
 
   return (
-    <MainContainer>
-      <Header>
-        <NavItem Link to="/DashBoard">
-          DashBoard
-        </NavItem>
-        <NavItem Link to="/Data">
-          Mes données
-        </NavItem>
-      </Header>
-
-      <InputDataContainer>
-        <Information>
-          <Form
-            onSubmit={(e) => {
-              handleSubmit(e);
-              differenceCash();
+    <div className="main_container">
+      <div className="information">
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+            differenceCash();
+          }}
+        >
+          <div className="input_container">
+            <label className="input_data_container_label" htmlFor="cashInflow">
+              Saisissez votre salaire
+            </label>
+            <input
+              className="input_field"
+              id="cashInflow"
+              type="number"
+              name="salary"
+              step="0.01"
+              value={cashInflow}
+              onChange={(e) => handleChangeCashInflow(e)}
+            ></input>
+          </div>
+          <div className="input_container">
+            <label className="input_data_container_label" htmlFor="cashOutflow">
+              Saisissez vos dépenses
+            </label>
+            <input
+              className="input_field"
+              id="cashOutflow"
+              type="number"
+              name="cashOut"
+              step="0.01"
+              value={cashOutflow}
+              onChange={(e) => handleChangeCashOutflow(e)}
+            ></input>
+          </div>
+          {createList()}
+          <button
+            id="addItem"
+            type="button"
+            onClick={() => {
+              addListItem();
+              // setSumDisplay(false);
             }}
           >
-            <InputContainer>
-              <Label>Saisie ton salaire</Label>
-              <InputField
-                id="cashInflow"
-                type="number"
-                name="salary"
-                step="0.01"
-                value={cashInflow}
-                onChange={(e) => handleChangeCashInflow(e)}
-              ></InputField>
-            </InputContainer>
-            <InputContainer>
-              <Label>Saisie tes dépenses</Label>
-              <InputField
-                id="cashOutflow"
-                type="number"
-                name="cashOut"
-                step="0.01"
-                value={cashOutflow}
-                onChange={(e) => handleChangeCashOutflow(e)}
-              ></InputField>
-            </InputContainer>
-            {createList()}
-            <PlusButton
-              id="addItem"
+            Ajouter une dépense
+            <i className="fas fa-plus"></i>{" "}
+          </button>
+          <div className="action_buttons">
+            <input
+              className="submit"
+              type="submit"
+              value="Valider"
+              onClick={() =>
+                setButtonClicked({ type: "info", isClicked: true })
+              }
+            ></input>
+            <input
+              className="submit"
+              type="reset"
+              value="Reset"
               onClick={() => {
-                addListItem();
+                setItems([]);
+                setCashInflow("");
+                setCashOutflow("");
+                setTotalCash("");
                 setSumDisplay(false);
               }}
-            >
-              +
-            </PlusButton>
-            <ActionButtons>
-              <Submit
-                type="submit"
-                value="Valider"
-                onClick={() =>
-                  setButtonClicked({ type: "info", isClicked: true })
-                }
-              ></Submit>
-              <Submit
-                type="reset"
-                value="Reset"
-                onClick={() => {
-                  setItems([]);
-                  setCashInflow("");
-                  setCashOutflow("");
-                  setTotalCash("");
-                  setSumDisplay(false);
-                }}
-              ></Submit>
-            </ActionButtons>
-          </Form>
-          {isSumDisplay && (
-            <Remain>Le capital restant est de : {totalCash} €/mois </Remain>
-          )}
-        </Information>
-        <ToastContainer />
-      </InputDataContainer>
-    </MainContainer>
+            ></input>
+          </div>
+        </form>
+        {isSumDisplay && (
+          <p className="remain">
+            Le capital restant est de : {totalCash} €/mois{" "}
+          </p>
+        )}
+      </div>
+      <ToastContainer />
+    </div>
   );
 }

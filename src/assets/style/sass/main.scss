@@ -1,0 +1,13 @@
+@use "../../../../node_modules/scss-reset/_reset";
+@use "/src/assets/style/sass/base/_typography";
+
+@use "/src/assets/style/sass/utilities/variables";
+
+@use "/src/assets/style/sass/components/icons";
+
+@use "/src/assets/style/sass/layout/body";
+@use "/src/assets/style/sass/layout/header";
+@use "/src/assets/style/sass/layout/forms";
+
+@use "/src/assets/style/sass/pages/home";
+@use "/src/assets/style/sass/pages/input_data";

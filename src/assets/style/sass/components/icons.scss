@@ -1,0 +1,31 @@
+@use "/src/assets/style/sass/utilities/variables" as *;
+
+a {
+  align-self: center;
+  .fa-arrow-left {
+    font-size: 2em;
+    color: rgb(255, 255, 255);
+    margin-left: 10px;
+  }
+}
+
+.fa-minus-square {
+  width: 20px;
+  color: #e29696;
+  align-self: center;
+
+  &:hover {
+    color: $red;
+    transition: all 0.3s ease;
+  }
+}
+
+.fa-plus-square {
+  width: 20px;
+  // color: $green;
+  // opacity: 0.5;
+  // &:hover {
+  //   color: $green;
+  //   transition: all 0.3s ease;
+  // }
+}
